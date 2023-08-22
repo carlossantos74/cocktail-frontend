@@ -1,0 +1,29 @@
+@import '@radix-ui/colors/gray.css';
+@import '@radix-ui/colors/gray-dark.css';
+@import '@radix-ui/colors/violet.css';
+@import '@radix-ui/colors/violet-dark.css';
+@import 'font.scss';
+@import 'button.scss';
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+}
+
+html {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+body {
+  height: 100%;
+  width: 100%;
+
+  color: var(--gray-12);
+  background-color: var(--gray-1);
+}
+
