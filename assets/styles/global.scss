@@ -25,5 +25,14 @@ body {
 
   color: var(--gray-12);
   background-color: var(--gray-1);
+  transition: background-color 250ms ease-out;
 }
 
+body > div {
+
+  // This is the main container for the app
+  &, & > div {
+    height: 100%;
+    width: 100%;
+  }
+}
