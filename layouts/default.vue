@@ -2,8 +2,8 @@
 </script>
 
 <template>
-  <Header />
   <main>
+  <Header />
     <slot /> 
   </main>
 </template>
@@ -13,5 +13,6 @@
   main { 
     overflow: hidden;
     height: 100%;
+    display: grid;
   }
 </style>
