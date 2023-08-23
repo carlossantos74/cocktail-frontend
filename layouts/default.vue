@@ -9,4 +9,9 @@
 </template>
 
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+  main { 
+    overflow: hidden;
+    height: 100%;
+  }
+</style>
