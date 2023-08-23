@@ -2,7 +2,6 @@
   .#{$class} {
     padding: 8px 16px;
     min-width: 88px;
-    height: 40px;
     font-size: $font-size-xxs;
     background-color: var(#{$variable}-#{12});
     color: var(#{$variable}-#{1});
@@ -11,6 +10,7 @@
     transition: all 200ms;
     position: relative;
     cursor: pointer;
+    gap: 12px;
     
     
     display: flex;
