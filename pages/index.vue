@@ -1,8 +1,19 @@
 <script lang="ts" setup>
+  import { useModal } from 'vue-final-modal'
+
   import { Cocktail, StateType } from '@/common/types/global.types';
+  import CocktailModal from '@/components/CocktailModal.vue'
+
 
   const config = useRuntimeConfig()
   const router = useRouter();
+  const { open, close } = useModal({
+    component: CocktailModal,
+    attrs: {
+      cocktailId: router.currentRoute.value.query.cocktail as string,
+      onClose: () => close()
+    },
+  })
 
   /** State */
   const categories = ref<string[]>([])
@@ -29,11 +40,15 @@
   /** Lifecycle hooks  */
   onBeforeMount(() => fetchCocktailsCategories())
   onMounted(() => {
-    const { category } = router.currentRoute.value.query;
+    const { category, cocktail } = router.currentRoute.value.query;
     
     if(category) {
       currentCategory.value = category as string;
       fetchCocktails();
+    }
+
+    if(cocktail) { 
+      open();
     }
   })
 

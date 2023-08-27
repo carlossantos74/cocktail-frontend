@@ -2,6 +2,7 @@
   import { Cocktail, StateType } from '@/common/types/global.types';
   import { VueFinalModal } from 'vue-final-modal'
 
+  const router = useRouter();
   const config = useRuntimeConfig();
   const props = defineProps({
     cocktailId: {
@@ -35,6 +36,10 @@
 
       cocktail.value = response.drinks[0]
 
+      router.replace({ query: { 
+        cocktail: props.cocktailId,
+        category: cocktail.value?.strCategory
+      }})
       setCocktailIngredients()
     } catch (e) {
       console.error(e)
@@ -54,6 +59,14 @@
 
       ingredient && ingredients.value.push(ingredient)
     })
+  }
+
+  const closeModal = () => { 
+    router.replace({ query: { 
+      category: cocktail.value?.strCategory
+    }})
+
+    emit('close')
   }
 </script>
 
@@ -89,7 +102,7 @@
         </template>
 
         <footer>
-          <button class="cs-button--small" @click="emit('close')">
+          <button class="cs-button--small" @click="closeModal">
             Close
           </button>
         </footer>
