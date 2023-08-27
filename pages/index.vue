@@ -18,6 +18,7 @@
   /** State */
   const categories = ref<string[]>([])
   const currentCategory = ref<string | null>(null);
+  const cocktailName = ref<string | null>(null);
   const cocktails = ref<Array<Cocktail> | null>(null);
   const isLoading = ref<boolean>(false);
   const error = ref<string | null>('');
@@ -34,17 +35,22 @@
   const stateMessage = computed<string>(() => { 
     if(error.value) return error.value
 
-    return hasSearchHappened.value ? 'No cocktails found' : 'Select a category and click on search';
+    return hasSearchHappened.value ? 'No cocktails found in these search' : 'Select a category and click on search';
   })
 
   /** Lifecycle hooks  */
   onBeforeMount(() => fetchCocktailsCategories())
   onMounted(() => {
-    const { category, cocktail } = router.currentRoute.value.query;
+    const { category, cocktail, cocktail_name } = router.currentRoute.value.query;
     
     if(category) {
       currentCategory.value = category as string;
-      fetchCocktails();
+      fetchCocktailsByCategory();
+    }
+
+    if(cocktail_name) { 
+      cocktailName.value = cocktail_name as string;
+      fetchCocktailByName();
     }
 
     if(cocktail) { 
@@ -69,12 +75,12 @@
 
   const onSelectChange = (data: string): void => {
     currentCategory.value = data
+
+    fetchCocktailsByCategory()
   }
   
-  const fetchCocktails = async (): Promise<void> => {
-    if(!currentCategory.value) {
-      return;
-    }
+  const fetchCocktailsByCategory = async (): Promise<void> => {
+    if(!currentCategory.value) return;
 
     cocktails.value = [];
     hasSearchHappened.value = true;
@@ -85,7 +91,36 @@
       const response = await $fetch<{ drinks: Cocktail[] }>(`${config.public.apiBaseUrl}/filter.php?c=${currentCategory.value}`);
 
       if(!response || !response.drinks) {
-        throw new Error('No drinks found');
+        // if don't have drinks, should clean the list
+        cocktails.value = []
+      }
+
+      cocktails.value = response.drinks;
+    } catch (e) {
+      error.value = error.value = 'An error has occurred when fetching cocktails. Try again later.';
+    } finally { 
+      isLoading.value = false;
+    }
+  }
+
+  const onTextInputChange = (data: string): void => {
+    cocktailName.value = data;
+  }
+
+  const fetchCocktailByName = async (): Promise<void> => {
+    if(!cocktailName.value || !cocktailName.value.trim()) return;
+
+    cocktails.value = [];
+    hasSearchHappened.value = true;
+    isLoading.value = true;
+    router.replace({ query: { cocktail_name: cocktailName.value }})
+
+    try {
+      const response = await $fetch<{ drinks: Cocktail[] }>(`${config.public.apiBaseUrl}/search.php?s=${cocktailName.value}`);
+
+      if(!response || !response.drinks) {
+        // if don't have drinks, should clean the list
+        cocktails.value = []
       }
 
       cocktails.value = response.drinks;
@@ -100,9 +135,13 @@
 <template>  
   <section class="search-container">
     <Select :options="categories" @change="onSelectChange"/> 
-    <button class="cs-button" @click="fetchCocktails">
-      Search <Icon name="material-symbols:search" />
-    </button>
+
+    <div class="search-by-term">
+      <TextInput @change="onTextInputChange" />
+      <button class="cs-button" @click="fetchCocktailByName" :disabled="!cocktailName?.trim()">
+        Search <Icon name="material-symbols:search" />
+      </button>
+    </div>
   </section>
   <State 
       v-if="isEmpty || isLoading || error" 
@@ -124,10 +163,15 @@
     width: 100%;
     background-color: var(--violet-5);
 
-    display: flex;
     align-items: center;
     justify-content: space-between;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.20);
+
+    &, div.search-by-term { 
+      display: flex;
+      align-items: flex-end;
+      gap: 12px;
+    }
   }
   
   section { 
