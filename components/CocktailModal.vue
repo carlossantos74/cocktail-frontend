@@ -12,6 +12,7 @@
   })
   const emit = defineEmits(['close'])
 
+  const favorites = ref<Cocktail[]>([])
   const cocktail = ref<Cocktail | null>(null)
   const ingredients = ref<string[]>([])
   const isLoading = ref<boolean>(false);
@@ -22,7 +23,14 @@
     if(error.value) return StateType.ERROR
   })
 
-  onBeforeMount(() => fetchCocktail())
+  const isFavorite = computed<boolean>(() => {
+    return favorites.value.some((favorite) => favorite.idDrink === cocktail.value?.idDrink)
+  })
+
+  onBeforeMount(() => {
+    fetchCocktail()
+    fetchFavorites()
+  })
 
   const fetchCocktail = async () => {
     isLoading.value = true
@@ -40,6 +48,7 @@
         cocktail: props.cocktailId,
         category: cocktail.value?.strCategory
       }})
+
       setCocktailIngredients()
     } catch (e) {
       console.error(e)
@@ -47,6 +56,29 @@
     } finally { 
       isLoading.value = false
     }
+  }
+
+  const fetchFavorites = () => { 
+    const favoritesList = localStorage.getItem('favorites');
+
+    if(!favoritesList) return;
+
+    favorites.value = JSON.parse(favoritesList);
+  }
+
+  const addToFavorites = () => {
+    localStorage.setItem('favorites', JSON.stringify([...favorites.value, cocktail.value]));
+    fetchFavorites();
+  }
+
+  const removeFromFavorites = () => { 
+    const newFavorites = favorites.value.filter((favorite) => favorite.idDrink !== cocktail.value?.idDrink);
+    localStorage.setItem('favorites', JSON.stringify(newFavorites));
+    fetchFavorites()
+  }
+
+  const toggleFavorite = () => { 
+    isFavorite.value ? removeFromFavorites() : addToFavorites();
   }
 
   const setCocktailIngredients = () => { 
@@ -82,9 +114,14 @@
         <template v-else>
           <img :src="cocktail?.strDrinkThumb" :alt="cocktail?.strDrink">
           <header>
-            <h2>
-              {{ cocktail?.strDrink }}
-            </h2>
+            <span>
+              <h2>
+              {{ cocktail?.strDrink }} 
+              <button class="fav-button" @click="toggleFavorite">
+                <Icon :name="isFavorite ? 'material-symbols:favorite' : 'material-symbols:favorite-outline'" /> 
+              </button>
+              </h2>
+            </span>
             <p>{{ cocktail?.strAlcoholic }}</p>
           </header>
           <section>
@@ -148,6 +185,27 @@
 
     .state { 
       flex: 1 0
+    }
+
+    button.fav-button { 
+      display: inline-block;
+      background: none;
+      border: none;
+
+      cursor: pointer;
+      font-size: 24px;
+      color: var(--violet-12);
+
+      transition: color 200ms;
+
+      &:hover { 
+        color: var(--violet-10);
+      }
+
+      &:focus { 
+        color: var(--violet-9);
+        outline: none;
+      }
     }
   }
 </style>
