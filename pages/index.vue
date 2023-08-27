@@ -2,6 +2,7 @@
   import { Cocktail, StateType } from '@/common/types/global.types';
 
   const config = useRuntimeConfig()
+  const router = useRouter();
 
   /** State */
   const categories = ref<string[]>([])
@@ -27,9 +28,17 @@
 
   /** Lifecycle hooks  */
   onBeforeMount(() => fetchCocktailsCategories())
+  onMounted(() => {
+    const { category } = router.currentRoute.value.query;
+    
+    if(category) {
+      currentCategory.value = category as string;
+      fetchCocktails();
+    }
+  })
 
   /** Methods */
-  const fetchCocktailsCategories = async () => { 
+  const fetchCocktailsCategories = async () => {
     try {
       const response = await $fetch<{ drinks: Partial<Cocktail>[] }>(`${config.public.apiBaseUrl}/list.php?c=list`)
     
@@ -55,6 +64,7 @@
     cocktails.value = [];
     hasSearchHappened.value = true;
     isLoading.value = true;
+    router.replace({ query: { category: currentCategory.value }})
 
     try {
       const response = await $fetch<{ drinks: Cocktail[] }>(`${config.public.apiBaseUrl}/filter.php?c=${currentCategory.value}`);
