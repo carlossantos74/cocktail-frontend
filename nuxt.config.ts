@@ -5,7 +5,8 @@ export default defineNuxtConfig({
    },
    modules: ['nuxt-icon'],
    css: [
-    '@/assets/styles/global.scss'
+    '@/assets/styles/global.scss',
+    'vue-final-modal/style.css'
    ],
    runtimeConfig: {
     public: {

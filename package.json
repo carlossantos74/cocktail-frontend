@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@radix-ui/colors": "^2.1.0",
-    "nuxt-icon": "^0.5.0"
+    "nuxt-icon": "^0.5.0",
+    "vue-final-modal": "^4.4.5"
   }
 }
