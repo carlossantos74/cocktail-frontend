@@ -2,12 +2,23 @@
 <script setup lang="ts">
   import { Cocktail } from '@/common/types/global.types';
 
-  defineProps({
+  import { useModal } from 'vue-final-modal'
+  import CocktailModal from './CocktailModal.vue'
+
+  const props = defineProps({
     cocktail: {
       type: Object as PropType<Cocktail>,
       required: true
     }
   });
+
+  const { open, close } = useModal({
+    component: CocktailModal,
+    attrs: {
+      cocktailId: props.cocktail.idDrink,
+      onClose: () => close()
+    },
+  })
 </script>
 
 <template>
@@ -22,7 +33,7 @@
     
   
     <div class="cocktail-card__button-wrapper">
-      <button class="cs-button--small">
+      <button class="cs-button--small" @click="open">
         <Icon name="ic:baseline-arrow-forward" />
       </button>
     </div>
