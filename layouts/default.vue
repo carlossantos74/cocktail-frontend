@@ -14,5 +14,6 @@
     overflow: hidden;
     height: 100%;
     display: grid;
+    grid-template-rows: 75px min-content 1fr;
   }
 </style>
