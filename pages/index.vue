@@ -19,7 +19,7 @@
   const categories = ref<string[]>([])
   const currentCategory = ref<string | null>(null);
   const cocktailName = ref<string | null>(null);
-  const cocktails = ref<Array<Cocktail> | null>(null);
+  const cocktails = ref<Array<Partial<Cocktail>> | null>(null);
   const isLoading = ref<boolean>(false);
   const error = ref<string | null>('');
   const hasSearchHappened = ref<boolean>(false);
@@ -35,7 +35,7 @@
   const stateMessage = computed<string>(() => { 
     if(error.value) return error.value
 
-    return hasSearchHappened.value ? 'No cocktails found in these search' : 'Select a category and click on search';
+    return hasSearchHappened.value ? 'No cocktails found in these search' : 'Select a category or search by name';
   })
 
   /** Lifecycle hooks  */
@@ -88,7 +88,7 @@
     router.replace({ query: { category: currentCategory.value }})
 
     try {
-      const response = await $fetch<{ drinks: Cocktail[] }>(`${config.public.apiBaseUrl}/filter.php?c=${currentCategory.value}`);
+      const response = await $fetch<{ drinks: Partial<Cocktail>[] }>(`${config.public.apiBaseUrl}/filter.php?c=${currentCategory.value}`);
 
       if(!response || !response.drinks) {
         // if don't have drinks, should clean the list

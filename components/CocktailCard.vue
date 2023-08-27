@@ -7,7 +7,7 @@
 
   const props = defineProps({
     cocktail: {
-      type: Object as PropType<Cocktail>,
+      type: Object as PropType<Partial<Cocktail>>,
       required: true
     }
   });
@@ -15,7 +15,7 @@
   const { open, close } = useModal({
     component: CocktailModal,
     attrs: {
-      cocktailId: props.cocktail.idDrink,
+      cocktailId: props.cocktail.idDrink as string,
       onClose: () => close()
     },
   })
