@@ -86,7 +86,7 @@
   <section class="search-container">
     <Select :options="categories" @change="onSelectChange"/> 
     <button class="cs-button" @click="fetchCocktails">
-      Buscar <Icon name="material-symbols:search" />
+      Search <Icon name="material-symbols:search" />
     </button>
   </section>
   <State 
