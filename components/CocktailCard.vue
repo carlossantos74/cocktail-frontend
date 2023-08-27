@@ -1,12 +1,20 @@
 
+<script setup lang="ts">
+  import { Cocktail } from '@/common/types/global.types';
+
+  defineProps({
+    cocktail: {
+      type: Object as PropType<Cocktail>,
+      required: true
+    }
+  });
+</script>
 
 <template>
   <div>
-    <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y29ja3RhaWx8ZW58MHx8MHx8fDA%3D&w=1000&q=80" />
-
-    <h1>Cocktail name</h1>
-    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quasi earum obcaecati, placeat sed incidunt tenetur eius provident nam dolor aspernatur odio omnis molestias delectus, facere cumque ab reprehenderit distinctio laudantium.</p>
-
+    <img :src="cocktail.strDrinkThumb" />
+    <h1>{{ cocktail.strDrink }}</h1>
+    
     <button class="cs-button--small">
       Ver detalhes 
       <Icon name="ic:baseline-arrow-forward" /> 
@@ -21,7 +29,7 @@
 
     background: var(--violet-3);
     border-radius: 12px;  
-    border: 1px solid var(--violet-7);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
     display: flex;
     align-items: center;
@@ -32,9 +40,7 @@
     gap: 8px;
 
     img { 
-      max-width: 100%;
-      border-top-left-radius: 12px;
-      border-top-right-radius: 12px;
+      height: 200px;
     }
 
     p { 
