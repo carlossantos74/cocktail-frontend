@@ -10,6 +10,12 @@
 <template>
   <header>
     <h3>Cocktail API</h3>
+
+    <nav>
+      <router-link to="/">Home</router-link>
+      <router-link to="/favorites">Favorites</router-link>
+    </nav>
+
     <button class="toggle-theme-button" @click="toggleTheme">
       <Icon name="tabler:sun-moon" />
     </button>
@@ -40,5 +46,20 @@
     }
 
     transition: all 200ms;
+  }
+
+  nav { 
+    display: flex;
+    gap: 12px;
+
+    a { 
+      text-decoration: none;
+      color: var(--violet-12);
+      font-weight: 600;
+
+      &:hover { 
+        color: var(--violet-10);
+      }
+    }
   }
 </style>
