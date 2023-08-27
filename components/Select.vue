@@ -1,5 +1,6 @@
 
 <script setup lang="ts">
+ const value = ref<string | null>(null);
  const props = defineProps({
     options: {
       type: Array as PropType<string[]>,
@@ -9,11 +10,8 @@
 
   const emit = defineEmits(['change']);
 
-  const onChange = (event: Event) => {
-    const target = event.target as HTMLSelectElement
-    const value = props.options.includes(target.value) ? target.value : null;
-
-    emit('change', value);
+  const onChange = (_: Event) => {
+    emit('change', value.value);
   }
 </script>
 
@@ -21,8 +19,8 @@
    <div class="search-container__select-wrapper">
     <label for="categories">Choose a category:</label>
 
-    <select name="categories" id="categories" @change="onChange">
-      <option>Select an option</option>
+    <select name="categories" id="categories" @change="onChange" v-model="value">
+      <option :value="null">Select an option</option>
       <option v-for="option in options" :key="option" :value="option">{{ option }}</option>
     </select>
   </div>

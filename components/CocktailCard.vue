@@ -11,50 +11,57 @@
 </script>
 
 <template>
-  <div>
-    <img :src="cocktail.strDrinkThumb" />
-    <h1>{{ cocktail.strDrink }}</h1>
+  <div class="cocktail-card">
+    <div class="cocktail-card__title">
+      <span class="badge">
+        <Icon name="mdi:glass-cocktail" />
+      </span>
+
+      <h3>{{ cocktail.strDrink }}</h3>
+    </div>
     
-    <button class="cs-button--small">
-      Ver detalhes 
-      <Icon name="ic:baseline-arrow-forward" /> 
-    </button>
+  
+    <div class="cocktail-card__button-wrapper">
+      <button class="cs-button--small">
+        <Icon name="ic:baseline-arrow-forward" />
+      </button>
+    </div>
   </div>  
 </template>
 
 <style scoped lang="scss">
-  div { 
-    height: 370px;
-    width: 325px;
+  div.cocktail-card { 
+    width: 100%;
+    background: var(--gray-3);
+    border-radius: 4px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.20);
+    padding: 12px;
 
-    background: var(--violet-3);
-    border-radius: 12px;  
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    flex-direction: column;
+    justify-content: space-between;
+    gap: 12px;
 
     overflow: hidden;
-    gap: 8px;
 
-    img { 
-      height: 200px;
+    .badge {
+      padding: 8px;
+      font-size: 24px;
+      background-color: var(--violet-5);
+      border-radius: 4px;
+
+      height: fit-content;
+      width: fit-content;
     }
 
-    p { 
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      text-align: center;
-
-      margin-bottom: 8px;
+    &,
+    &__title, 
+    &__button-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
-    h1 {
-      margin-bottom: 8px;
+    &__title { 
+      gap: 8px;
     }
   }
 </style>

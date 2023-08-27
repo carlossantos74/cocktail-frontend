@@ -89,12 +89,12 @@
       Buscar <Icon name="material-symbols:search" />
     </button>
   </section>
-  <section>
-    <State 
-        v-if="isEmpty || isLoading || error" 
-        :type="state"
-        :message="stateMessage"
-      /> 
+  <State 
+      v-if="isEmpty || isLoading || error" 
+      :type="state"
+      :message="stateMessage"
+    /> 
+  <section v-else>
     <CocktailCard 
       v-for="(cocktail) in cocktails" 
       :cocktail="cocktail" 
@@ -119,9 +119,10 @@
     height: 100%;
     overflow: auto;
 
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(325px, 1fr));
+    grid-auto-rows: 100px;
+    justify-items: center;
     gap: 12px;
     
     padding: 24px;
