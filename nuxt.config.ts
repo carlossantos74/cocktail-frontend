@@ -7,4 +7,9 @@ export default defineNuxtConfig({
    css: [
     '@/assets/styles/global.scss'
    ],
+   runtimeConfig: {
+    public: {
+      apiBaseUrl: 'https://www.thecocktaildb.com/api/json/v1/1'
+    }
+   }
 })
